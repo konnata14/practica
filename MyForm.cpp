@@ -1,4 +1,4 @@
-//Главная программа (MyForm.cpp)
+// MainForm.cpp
 #include "MainForm.h"
 
 namespace WindowsFormsApp1 {
@@ -22,142 +22,380 @@ namespace WindowsFormsApp1 {
     {
         this->components = gcnew System::ComponentModel::Container();
         this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-        this->Text = "Figures Editor";
+        this->Text = "Figures";
         this->ClientSize = System::Drawing::Size(900, 650);
 
-        // Панель для рисования
+        // drawPanel
         this->drawPanel = gcnew Panel();
-        this->drawPanel->Location = System::Drawing::Point(50, 250);
-        this->drawPanel->Size = System::Drawing::Size(800, 350);
+        this->drawPanel->Location = System::Drawing::Point(50, 260);
+        this->drawPanel->Size = System::Drawing::Size(800, 360);
         this->drawPanel->BorderStyle = BorderStyle::FixedSingle;
         this->drawPanel->BackColor = Color::White;
         this->drawPanel->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MainForm::DrawPanel_Paint);
         this->Controls->Add(this->drawPanel);
 
-        // Основные координаты
+        // Labels and TextBoxes for coordinates and radius
         this->xCoordLabel = gcnew Label();
-        this->xCoordLabel->Location = System::Drawing::Point(50, 30);
-        this->xCoordLabel->Text = "X Coordinate:";
+        this->xCoordLabel->Location = System::Drawing::Point(50, 20);
+        this->xCoordLabel->Size = System::Drawing::Size(100, 20);
+        this->xCoordLabel->Text = "X:";
         this->Controls->Add(this->xCoordLabel);
 
         this->xCoordTextBox = gcnew TextBox();
-        this->xCoordTextBox->Location = System::Drawing::Point(50, 50);
+        this->xCoordTextBox->Location = System::Drawing::Point(50, 40);
         this->xCoordTextBox->Size = System::Drawing::Size(100, 20);
         this->Controls->Add(this->xCoordTextBox);
 
         this->yCoordLabel = gcnew Label();
-        this->yCoordLabel->Location = System::Drawing::Point(170, 30);
-        this->yCoordLabel->Text = "Y Coordinate:";
+        this->yCoordLabel->Location = System::Drawing::Point(170, 20);
+        this->yCoordLabel->Size = System::Drawing::Size(100, 20);
+        this->yCoordLabel->Text = "Y:";
         this->Controls->Add(this->yCoordLabel);
 
         this->yCoordTextBox = gcnew TextBox();
-        this->yCoordTextBox->Location = System::Drawing::Point(170, 50);
+        this->yCoordTextBox->Location = System::Drawing::Point(170, 40);
         this->yCoordTextBox->Size = System::Drawing::Size(100, 20);
         this->Controls->Add(this->yCoordTextBox);
 
-        // Радиус
         this->radiusLabel = gcnew Label();
-        this->radiusLabel->Location = System::Drawing::Point(290, 30);
+        this->radiusLabel->Location = System::Drawing::Point(290, 20);
+        this->radiusLabel->Size = System::Drawing::Size(100, 20);
         this->radiusLabel->Text = "Radius:";
         this->Controls->Add(this->radiusLabel);
 
         this->radiusTextBox = gcnew TextBox();
-        this->radiusTextBox->Location = System::Drawing::Point(290, 50);
+        this->radiusTextBox->Location = System::Drawing::Point(290, 40);
         this->radiusTextBox->Size = System::Drawing::Size(100, 20);
         this->Controls->Add(this->radiusTextBox);
 
-        // Цвета
-        this->outlineColorLabel = gcnew Label();
-        this->outlineColorLabel->Location = System::Drawing::Point(50, 80);
-        this->outlineColorLabel->Text = "Outline Color:";
-        this->Controls->Add(this->outlineColorLabel);
+        // Move fields
+        this->moveXCoordLabel = gcnew Label();
+        this->moveXCoordLabel->Location = System::Drawing::Point(420, 20);
+        this->moveXCoordLabel->Size = System::Drawing::Size(120, 20);
+        this->moveXCoordLabel->Text = "Move X:";
+        this->Controls->Add(this->moveXCoordLabel);
 
-        this->outlineColorButton = gcnew Button();
-        this->outlineColorButton->Location = System::Drawing::Point(50, 100);
-        this->outlineColorButton->Size = System::Drawing::Size(100, 30);
-        this->outlineColorButton->Text = "Choose";
-        this->outlineColorButton->BackColor = Color::Black;
-        this->outlineColorButton->ForeColor = Color::White;
-        this->outlineColorButton->Click += gcnew System::EventHandler(this, &MainForm::OutlineColorButton_Click);
-        this->Controls->Add(this->outlineColorButton);
+        this->moveXCoordTextBox = gcnew TextBox();
+        this->moveXCoordTextBox->Location = System::Drawing::Point(420, 40);
+        this->moveXCoordTextBox->Size = System::Drawing::Size(100, 20);
+        this->Controls->Add(this->moveXCoordTextBox);
 
-        this->outlineColorDialog = gcnew ColorDialog();
-        this->outlineColorDialog->Color = Color::Black;
+        this->moveYCoordLabel = gcnew Label();
+        this->moveYCoordLabel->Location = System::Drawing::Point(550, 20);
+        this->moveYCoordLabel->Size = System::Drawing::Size(120, 20);
+        this->moveYCoordLabel->Text = "Move Y:";
+        this->Controls->Add(this->moveYCoordLabel);
+
+        this->moveYCoordTextBox = gcnew TextBox();
+        this->moveYCoordTextBox->Location = System::Drawing::Point(550, 40);
+        this->moveYCoordTextBox->Size = System::Drawing::Size(100, 20);
+        this->Controls->Add(this->moveYCoordTextBox);
+
+        // Color inputs
+        this->borderColorLabel = gcnew Label();
+        this->borderColorLabel->Location = System::Drawing::Point(50, 80);
+        this->borderColorLabel->Size = System::Drawing::Size(170, 20);
+        this->borderColorLabel->Text = "Border Color (R,G,B):";
+        this->Controls->Add(this->borderColorLabel);
+
+        this->borderColorTextBox = gcnew TextBox();
+        this->borderColorTextBox->Location = System::Drawing::Point(50, 100);
+        this->borderColorTextBox->Size = System::Drawing::Size(170, 20);
+        this->Controls->Add(this->borderColorTextBox);
 
         this->fillColorLabel = gcnew Label();
-        this->fillColorLabel->Location = System::Drawing::Point(170, 80);
-        this->fillColorLabel->Text = "Fill Color:";
+        this->fillColorLabel->Location = System::Drawing::Point(250, 80);
+        this->fillColorLabel->Size = System::Drawing::Size(170, 20);
+        this->fillColorLabel->Text = "Fill Color (R,G,B):";
         this->Controls->Add(this->fillColorLabel);
 
-        this->fillColorButton = gcnew Button();
-        this->fillColorButton->Location = System::Drawing::Point(170, 100);
-        this->fillColorButton->Size = System::Drawing::Size(100, 30);
-        this->fillColorButton->Text = "Choose";
-        this->fillColorButton->BackColor = Color::LightBlue;
-        this->fillColorButton->Click += gcnew System::EventHandler(this, &MainForm::FillColorButton_Click);
-        this->Controls->Add(this->fillColorButton);
+        this->fillColorTextBox = gcnew TextBox();
+        this->fillColorTextBox->Location = System::Drawing::Point(250, 100);
+        this->fillColorTextBox->Size = System::Drawing::Size(170, 20);
+        this->Controls->Add(this->fillColorTextBox);
 
-        this->fillColorDialog = gcnew ColorDialog();
-        this->fillColorDialog->Color = Color::LightBlue;
-
-        // Группа для перемещения (отдельная четкая область)
-        this->moveGroupBox = gcnew GroupBox();
-        this->moveGroupBox->Location = System::Drawing::Point(400, 30);
-        this->moveGroupBox->Size = System::Drawing::Size(250, 120);
-        this->moveGroupBox->Text = "Move Figure";
-        this->Controls->Add(this->moveGroupBox);
-
-        // Поля внутри группы перемещения
-        this->moveXLabel = gcnew Label();
-        this->moveXLabel->Location = System::Drawing::Point(20, 30);
-        this->moveXLabel->Text = "New X:";
-        this->moveGroupBox->Controls->Add(this->moveXLabel);
-
-        this->moveXTextBox = gcnew TextBox();
-        this->moveXTextBox->Location = System::Drawing::Point(20, 50);
-        this->moveXTextBox->Size = System::Drawing::Size(80, 20);
-        this->moveGroupBox->Controls->Add(this->moveXTextBox);
-
-        this->moveYLabel = gcnew Label();
-        this->moveYLabel->Location = System::Drawing::Point(120, 30);
-        this->moveYLabel->Text = "New Y:";
-        this->moveGroupBox->Controls->Add(this->moveYLabel);
-
-        this->moveYTextBox = gcnew TextBox();
-        this->moveYTextBox->Location = System::Drawing::Point(120, 50);
-        this->moveYTextBox->Size = System::Drawing::Size(80, 20);
-        this->moveGroupBox->Controls->Add(this->moveYTextBox);
-
-        this->moveButton = gcnew Button();
-        this->moveButton->Location = System::Drawing::Point(20, 80);
-        this->moveButton->Size = System::Drawing::Size(180, 30);
-        this->moveButton->Text = "Move Selected Figure";
-        this->moveButton->Click += gcnew System::EventHandler(this, &MainForm::MoveButton_Click);
-        this->moveGroupBox->Controls->Add(this->moveButton);
-
-        // Кнопки создания фигур
+        // Buttons
         this->drawCircleButton = gcnew Button();
-        this->drawCircleButton->Location = System::Drawing::Point(50, 180);
-        this->drawCircleButton->Size = System::Drawing::Size(200, 40);
+        this->drawCircleButton->Location = System::Drawing::Point(450, 90);
+        this->drawCircleButton->Size = System::Drawing::Size(120, 30);
         this->drawCircleButton->Text = "Draw Circle";
         this->drawCircleButton->Click += gcnew System::EventHandler(this, &MainForm::DrawCircleButton_Click);
         this->Controls->Add(this->drawCircleButton);
 
         this->drawOctagonButton = gcnew Button();
-        this->drawOctagonButton->Location = System::Drawing::Point(300, 180);
-        this->drawOctagonButton->Size = System::Drawing::Size(200, 40);
+        this->drawOctagonButton->Location = System::Drawing::Point(580, 90);
+        this->drawOctagonButton->Size = System::Drawing::Size(120, 30);
         this->drawOctagonButton->Text = "Draw Octagon";
         this->drawOctagonButton->Click += gcnew System::EventHandler(this, &MainForm::DrawOctagonButton_Click);
         this->Controls->Add(this->drawOctagonButton);
 
         this->drawComFigureButton = gcnew Button();
-        this->drawComFigureButton->Location = System::Drawing::Point(550, 180);
-        this->drawComFigureButton->Size = System::Drawing::Size(200, 40);
+        this->drawComFigureButton->Location = System::Drawing::Point(710, 90);
+        this->drawComFigureButton->Size = System::Drawing::Size(120, 30);
         this->drawComFigureButton->Text = "Draw Composite";
         this->drawComFigureButton->Click += gcnew System::EventHandler(this, &MainForm::DrawComFigureButton_Click);
         this->Controls->Add(this->drawComFigureButton);
+
+        this->moveButton = gcnew Button();
+        this->moveButton->Location = System::Drawing::Point(450, 130);
+        this->moveButton->Size = System::Drawing::Size(120, 30);
+        this->moveButton->Text = "Move Last";
+        this->moveButton->Click += gcnew System::EventHandler(this, &MainForm::MoveButton_Click);
+        this->Controls->Add(this->moveButton);
+
+        this->changeBorderColorButton = gcnew Button();
+        this->changeBorderColorButton->Location = gcnew System::Drawing::Point(580, 130);
+        this->changeBorderColorButton->Size = System::Drawing::Size(120, 30);
+        this->changeBorderColorButton->Text = "Set Border";
+        this->changeBorderColorButton->Click += gcnew System::EventHandler(this, &MainForm::ChangeBorderColorButton_Click);
+        this->Controls->Add(this->changeBorderColorButton);
+
+        this->changeFillColorButton = gcnew Button();
+        this->changeFillColorButton->Location = gcnew System::Drawing::Point(710, 130);
+        this->changeFillColorButton->Size = System::Drawing::Size(120, 30);
+        this->changeFillColorButton->Text = "Set Fill";
+        this->changeFillColorButton->Click += gcnew System::EventHandler(this, &MainForm::ChangeFillColorButton_Click);
+        this->Controls->Add(this->changeFillColorButton);
     }
 
-    // ... (реализации остальных методов остаются без изменений из предыдущего примера)
-    // MoveButton_Click, Draw... методы и другие обработчики событий
+    void MainForm::MainForm_Load(System::Object^ sender, System::EventArgs^ e)
+    {
+        figures = gcnew List<Figure^>();
+    }
+
+    void MainForm::DrawPanel_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
+    {
+        for each(Figure ^ figure in figures)
+        {
+            try
+            {
+                figure->Draw(e->Graphics);
+            }
+            catch (Exception^ ex)
+            {
+                LogError(ex->Message);
+                // don't rethrow, just skip drawing this figure
+            }
+        }
+    }
+
+    bool MainForm::IsValidPosition(int x, int y, int radius, bool allowZeroRadius)
+    {
+        if (x < 0 || y < 0) return false;
+        if (!allowZeroRadius && radius <= 0) return false;
+        if (radius < 0) return false;
+
+        // We assume coordinates are relative to drawPanel (user should input coordinates within panel)
+        int w = drawPanel->ClientSize.Width;
+        int h = drawPanel->ClientSize.Height;
+
+        // Check that the shape entirely fits inside panel
+        if (x - radius < 0 || y - radius < 0) return false;
+        if (x + radius > w || y + radius > h) return false;
+
+        return true;
+    }
+
+    void MainForm::DrawCircleButton_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        try
+        {
+            int x = Int32::Parse(xCoordTextBox->Text);
+            int y = Int32::Parse(yCoordTextBox->Text);
+            int radius = Int32::Parse(radiusTextBox->Text);
+
+            if (!IsValidPosition(x, y, radius, false))
+            {
+                MessageBox::Show("Invalid coordinates or radius. Coordinates and radius must be positive and figure must fit into drawing panel. Coordinates are relative to the drawing panel (top-left = 0,0).");
+                return;
+            }
+
+            figures->Add(gcnew Circle(Point(x, y), radius, 0, Color::FromArgb(106, 0, 90), Color::FromArgb(10, 100, 23)));
+            drawPanel->Refresh();
+        }
+        catch (FormatException^)
+        {
+            MessageBox::Show("Please enter valid integer values for coordinates and radius.");
+        }
+        catch (Exception^ ex)
+        {
+            LogError(ex->Message);
+            MessageBox::Show("An error occurred: " + ex->Message);
+        }
+    }
+
+    void MainForm::DrawOctagonButton_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        try
+        {
+            int x = Int32::Parse(xCoordTextBox->Text);
+            int y = Int32::Parse(yCoordTextBox->Text);
+            int radius = Int32::Parse(radiusTextBox->Text);
+
+            if (!IsValidPosition(x, y, radius, false))
+            {
+                MessageBox::Show("Invalid coordinates or radius. Coordinates and radius must be positive and figure must fit into drawing panel. Coordinates are relative to the drawing panel (top-left = 0,0).");
+                return;
+            }
+
+            figures->Add(gcnew Octagon(Point(x, y), radius, 0, Color::FromArgb(255, 0, 0), Color::FromArgb(0, 0, 255)));
+            drawPanel->Refresh();
+        }
+        catch (FormatException^)
+        {
+            MessageBox::Show("Please enter valid integer values for coordinates and radius.");
+        }
+        catch (Exception^ ex)
+        {
+            LogError(ex->Message);
+            MessageBox::Show("An error occurred: " + ex->Message);
+        }
+    }
+
+    void MainForm::DrawComFigureButton_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        try
+        {
+            int x = Int32::Parse(xCoordTextBox->Text);
+            int y = Int32::Parse(yCoordTextBox->Text);
+            int radius = Int32::Parse(radiusTextBox->Text);
+
+            if (!IsValidPosition(x, y, radius, false))
+            {
+                MessageBox::Show("Invalid coordinates or radius. Coordinates and radius must be positive and figure must fit into drawing panel. Coordinates are relative to the drawing panel (top-left = 0,0).");
+                return;
+            }
+
+            figures->Add(gcnew ComFigure(Point(x, y), radius, 0, Color::FromArgb(255, 0, 0), Color::FromArgb(0, 0, 250), Color::FromArgb(0, 250, 0), Color::FromArgb(10, 130, 0)));
+            drawPanel->Refresh();
+        }
+        catch (FormatException^)
+        {
+            MessageBox::Show("Please enter valid integer values for coordinates and radius.");
+        }
+        catch (Exception^ ex)
+        {
+            LogError(ex->Message);
+            MessageBox::Show("An error occurred: " + ex->Message);
+        }
+    }
+
+    void MainForm::MoveButton_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        try
+        {
+            if (figures->Count == 0)
+            {
+                MessageBox::Show("No figures to move.");
+                return;
+            }
+
+            int x = Int32::Parse(moveXCoordTextBox->Text);
+            int y = Int32::Parse(moveYCoordTextBox->Text);
+
+            // allow zero radius for move (we're only checking that point is inside)
+            if (!IsValidPosition(x, y, figures[figures->Count - 1]->Radius, true))
+            {
+                MessageBox::Show("Invalid coordinates for move. Coordinates must be such that the figure fits inside the drawing panel.");
+                return;
+            }
+
+            figures[figures->Count - 1]->Replace(Point(x, y));
+            drawPanel->Refresh();
+        }
+        catch (FormatException^)
+        {
+            MessageBox::Show("Please enter valid integer values for move coordinates.");
+        }
+        catch (Exception^ ex)
+        {
+            LogError(ex->Message);
+            MessageBox::Show("An error occurred: " + ex->Message);
+        }
+    }
+
+    void MainForm::ChangeBorderColorButton_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        try
+        {
+            if (figures->Count == 0)
+            {
+                MessageBox::Show("No figures to change color.");
+                return;
+            }
+
+            array<String^>^ colorParts = borderColorTextBox->Text->Split(',');
+            if (colorParts->Length != 3)
+            {
+                MessageBox::Show("Please enter the color in the format R,G,B.");
+                return;
+            }
+            int r = Int32::Parse(colorParts[0]);
+            int g = Int32::Parse(colorParts[1]);
+            int b = Int32::Parse(colorParts[2]);
+
+            figures[figures->Count - 1]->SetBorderColor(Color::FromArgb(r, g, b));
+            drawPanel->Refresh();
+        }
+        catch (FormatException^)
+        {
+            MessageBox::Show("Please enter valid integers for color components (0-255).");
+        }
+        catch (Exception^ ex)
+        {
+            LogError(ex->Message);
+            MessageBox::Show("An error occurred: " + ex->Message);
+        }
+    }
+
+    void MainForm::ChangeFillColorButton_Click(System::Object^ sender, System::EventArgs^ e)
+    {
+        try
+        {
+            if (figures->Count == 0)
+            {
+                MessageBox::Show("No figures to change color.");
+                return;
+            }
+
+            array<String^>^ colorParts = fillColorTextBox->Text->Split(',');
+            if (colorParts->Length != 3)
+            {
+                MessageBox::Show("Please enter the color in the format R,G,B.");
+                return;
+            }
+            int r = Int32::Parse(colorParts[0]);
+            int g = Int32::Parse(colorParts[1]);
+            int b = Int32::Parse(colorParts[2]);
+
+            figures[figures->Count - 1]->SetFillColor(Color::FromArgb(r, g, b));
+            drawPanel->Refresh();
+        }
+        catch (FormatException^)
+        {
+            MessageBox::Show("Please enter valid integers for color components (0-255).");
+        }
+        catch (Exception^ ex)
+        {
+            LogError(ex->Message);
+            MessageBox::Show("An error occurred: " + ex->Message);
+        }
+    }
+
+    void MainForm::LogError(String^ errorMessage)
+    {
+        try
+        {
+            std::ofstream logFile("error_log.txt", std::ios::app);
+            if (logFile.is_open())
+            {
+                logFile << "Error: " << marshal_as<std::string>(errorMessage) << std::endl;
+                logFile.close();
+            }
+        }
+        catch (...)
+        {
+            // swallow logging errors
+        }
+    }
 }
